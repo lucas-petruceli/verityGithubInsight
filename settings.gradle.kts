@@ -23,6 +23,5 @@ rootProject.name = "VerityGitHubInsight"
 include(":app")
 include(":feature:home")
 include(":feature:user")
-include(":core:network")
-include(":core:network-mock")
 include(":core:database")
+include(":core:net")

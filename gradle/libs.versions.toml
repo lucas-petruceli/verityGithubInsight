@@ -1,5 +1,8 @@
 [versions]
 agp = "8.4.1"
+coilCompose = "2.1.0"
+hiltAndroidGradlePlugin = "2.51.1"
+hiltNavigationCompose = "1.2.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -13,8 +16,15 @@ material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.0"
 retrofitVersion = "2.9.0"
 gsonVersion = "2.10.1"
+nav = "2.7.7"
 
 [libraries]
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidGradlePlugin" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidGradlePlugin" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "nav" }
+hilt-android-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hiltAndroidGradlePlugin" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
@@ -40,4 +50,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+hilt-android-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroidGradlePlugin" }
 
