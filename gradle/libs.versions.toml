@@ -15,9 +15,9 @@ retrofitVersion = "2.9.0"
 gsonVersion = "2.10.1"
 
 [libraries]
-retrofit2 = { group = "com.squareup", name = "retrofit2:retrofit", version.ref = "retrofitVersion" }
-retrofit2Gson = { group = "com.squareup", name = "retrofit2:converter-gson", version.ref = "retrofitVersion" }
-gson = { group = "com.google.code", name = "gson:gson", version.ref = "gsonVersion" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofitVersion" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofitVersion" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gsonVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
