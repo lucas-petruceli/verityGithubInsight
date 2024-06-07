@@ -1,5 +1,6 @@
 package com.example.home.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,11 +37,20 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(
+    navController: NavHostController,
+    onTitleChanged: (String) -> Unit,
+    onCanNavigateBackChanged: (Boolean) -> Unit
+) {
     val viewModel: HomeViewModel = hiltViewModel()
     val userState by viewModel.user.collectAsState()
 
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
+
+    LaunchedEffect(Unit) {
+        onTitleChanged("Users")
+        onCanNavigateBackChanged(false)
+    }
 
     Column(
         modifier = Modifier
@@ -63,8 +74,8 @@ fun HomeScreen(navController: NavHostController) {
 
             filterUser?.let {
                 items(filterUser){ user ->
-                    ItemCard(user ) {userId ->
-
+                    ItemCard(user) { item  ->
+                        navController.navigate("details/${item.id}/${item.name}")
                     }
                 }
             }
@@ -74,12 +85,12 @@ fun HomeScreen(navController: NavHostController) {
 }
 
 @Composable
-fun ItemCard(user: User, onClick: (Int) -> Unit) {
+fun ItemCard(user: User, onClick: (User) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp)
-            .clickable { onClick(user.id) }
+            .clickable { onClick(user) }
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),

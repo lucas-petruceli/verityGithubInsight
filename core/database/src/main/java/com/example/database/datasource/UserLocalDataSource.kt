@@ -9,4 +9,5 @@ class UserLocalDataSource @Inject constructor(
 ) {
     suspend fun insertUser(user: UserEntity) = userDao.insertUser(user)
     suspend fun getUserById(id: Int) = userDao.getUserById(id)
+    suspend fun getAll() = userDao.getAll()
 }

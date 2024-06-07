@@ -12,12 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             VerityGitHubInsightTheme {
                 val navController = rememberNavController()
-                var topBarTitle by rememberSaveable { mutableStateOf("Home") }
+                var topBarTitle by rememberSaveable { mutableStateOf("Users") }
                 var canNavigateBack by rememberSaveable { mutableStateOf(false) }
 
                 Log.i("Lucasteste", "onCreate: Desenhando MainActivity")
@@ -56,21 +56,26 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .statusBarsPadding(),
                     topBar = {
-                        TopAppBar(
-                            title = {
-                                Text(
-                                    text = topBarTitle,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    textAlign = TextAlign.Center
-                                )
-                            },
+                        CenterAlignedTopAppBar(modifier = Modifier.fillMaxWidth(),
                             navigationIcon = {
                                 if (canNavigateBack) {
-                                    IconButton(onClick = { navController.navigateUp() }) {
-                                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                                    IconButton(onClick = {
+                                        Log.i("Lucasteste", "click voltar")
+                                        navController.popBackStack()
+                                    }) {
+                                        Icon(
+                                            Icons.Filled.ArrowBack,
+                                            contentDescription = "Back"
+                                        )
                                     }
-
-                                } else null
+                                }
+                            },
+                            title = {
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = topBarTitle,
+                                    textAlign = TextAlign.Center,
+                                )
                             }
                         )
                     }
@@ -95,13 +100,32 @@ fun MyNavhost(
     onTitleChanged: (String) -> Unit,
     onCanNavigateBackChanged: (Boolean) -> Unit
 ) {
-    val userId = 1
     NavHost(
         modifier = Modifier.padding(innerPadding),
         navController = navController,
-        startDestination = "details"
+        startDestination = "home"
     ) {
-        composable("home") { HomeScreen(navController) }
-        composable("details") { UserDetailsScreen(userId, onTitleChanged, onCanNavigateBackChanged) }
+        composable("home") {
+            HomeScreen(
+                navController,
+                onTitleChanged,
+                onCanNavigateBackChanged
+            )
+        }
+        composable("details/{userId}/{username}") {
+            val userId = it.arguments?.getString("userId")?.toIntOrNull()
+            val username = it.arguments?.getString("username")
+            userId?.let {id ->
+                username?.let { name ->
+                    UserDetailsScreen(
+                        id,
+                        name,
+                        onTitleChanged,
+                        onCanNavigateBackChanged
+                    )
+                }
+            }
+
+        }
     }
 }

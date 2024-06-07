@@ -2,7 +2,7 @@ package com.example.net.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RepositoryResponse(
+data class GithubRepoResponse(
     val id: Long,
     @SerializedName("node_id") val nodeId: String,
     val name: String,
