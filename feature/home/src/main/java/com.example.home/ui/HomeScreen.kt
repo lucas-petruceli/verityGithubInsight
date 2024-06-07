@@ -31,10 +31,11 @@ import androidx.compose.ui.unit.sp
 import com.example.home.data.User
 import com.example.home.ui.compontents.SearchComponent
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun HomeScreen(){
+fun HomeScreen(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val userState by viewModel.user.collectAsState()
 

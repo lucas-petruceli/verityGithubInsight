@@ -1,5 +1,6 @@
 package com.example.user.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,12 +22,24 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 
 @Composable
-fun UserDetailsScreen(){
+fun UserDetailsScreen(
+    userId: Int,
+    onTitleChanged: (String) -> Unit,
+    onCanNavigateBackChanged: (Boolean) -> Unit, ) {
     val viewModel: UserDetailsViewModel = hiltViewModel()
     val userState by viewModel.user.collectAsState()
 
+    LaunchedEffect(Unit) {
+        onTitleChanged("User Details")
+        onCanNavigateBackChanged(true)
+    }
+
+    Log.i("Lucasteste", "onCreate: Desenhando UserDetailsScreen")
+
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

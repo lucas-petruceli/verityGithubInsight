@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("org.jetbrains.kotlin.kapt")
+    alias(libs.plugins.hilt.android.gradle)
 }
 
 android {
@@ -12,6 +14,16 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments(
+                    mapOf(
+                        "room.schemaLocation" to "$projectDir/schemas"
+                    )
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -35,9 +47,13 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+}
+
+kapt {
+    correctErrorTypes = true
 }
