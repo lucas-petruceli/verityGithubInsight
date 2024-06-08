@@ -25,7 +25,7 @@ fun SearchComponent(searchQuery: TextFieldValue, onValueChange: (TextFieldValue)
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         OutlinedTextField(
             value = searchQuery,
@@ -42,12 +42,7 @@ fun SearchComponent(searchQuery: TextFieldValue, onValueChange: (TextFieldValue)
                     contentDescription = "Search Icon",
                     tint = Color.Gray
                 )
-            },
-//            colors = TextFieldDefaults.outlinedTextFieldColors(
-//                backgroundColor = Color.White,
-//                focusedBorderColor = Color.Gray,
-//                unfocusedBorderColor = Color.Gray
-//            )
+            }
         )
     }
 }

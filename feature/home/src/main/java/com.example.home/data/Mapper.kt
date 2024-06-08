@@ -30,3 +30,20 @@ fun List<UserEntity>.toUsers(): List<User> {
         )
     }
 }
+
+fun List<UserResponse>.toEqualLocalDataBase(userEntity: List<UserEntity>?) : Boolean {
+    if(userEntity.isNullOrEmpty())
+        return false
+
+    if (this.size != userEntity.size)
+        return false
+
+    val sortedResponse = this.sortedBy { it.login }
+    val sortedEntity = userEntity.sortedBy { it.name }
+
+    return sortedResponse.zip(sortedEntity).all { (response, entity) ->
+        response.id == entity.id &&
+                response.login == entity.name &&
+                response.avatarUrl == entity.avatarUrl
+    }
+}

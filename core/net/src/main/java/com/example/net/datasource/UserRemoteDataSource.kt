@@ -5,7 +5,7 @@ import com.example.net.model.UserDetailsResponse
 import com.example.net.model.UserResponse
 import javax.inject.Inject
 
-class UserDataSource @Inject constructor(private val apiService: ApiService) {
+class UserRemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun fetchUsers(): List<UserResponse> {
         return apiService.fetchUsers()
     }

@@ -1,13 +1,8 @@
 package com.example.home.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.database.datasource.UserLocalDataSource
-import com.example.home.data.User
-import com.example.home.data.toListUser
-import com.example.home.data.toUsers
-import com.example.net.datasource.UserDataSource
+import com.example.home.data.repository.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,36 +11,21 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val userDataSource: UserDataSource,
-    private val userLocalDataSource: UserLocalDataSource
+    private val repository: HomeRepository
 ) : ViewModel() {
 
-    init {
-        fetchUsers()
-    }
-
-    private val _user = MutableStateFlow<List<User>?>(null)
-    val user: StateFlow<List<User>?> = _user
-
-    private fun fetchUsers() {
+    private val _uiState = MutableStateFlow<UiState?>(null)
+    val uiState: StateFlow<UiState?> = _uiState
+    fun fetchUsers() {
+        _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
-//                val userEntities = userLocalDataSource.getAll()
-//
-//                userEntities?.let {
-//                    _user.value = it.toUsers()
-//                }
-
-                val userResponse = userDataSource.fetchUsers()
-                val users = userResponse.toListUser()
-                _user.value = users
-
-//                users.forEach {
-//                    userLocalDataSource.insertUser(it.toUserEntity())
-//                }
-
-            }catch (e: Exception){
-                Log.i("Lucasteste", "exception")
+                repository.fetchUsers().collect {
+                    it.onSuccess { _uiState.value = UiState.Sucess(it) }
+                    it.onFailure { e -> throw e }
+                }
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error("Network request failure")
             }
         }
     }

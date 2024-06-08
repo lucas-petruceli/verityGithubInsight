@@ -1,7 +1,7 @@
 package com.example.net
 
 
-import com.example.net.datasource.UserDataSource
+import com.example.net.datasource.UserRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +32,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideUserDataSource(apiService: ApiService): UserDataSource {
-        return UserDataSource(apiService)
+    fun provideUserDataSource(apiService: ApiService): UserRemoteDataSource {
+        return UserRemoteDataSource(apiService)
     }
 }

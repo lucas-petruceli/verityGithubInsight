@@ -4,16 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.database.datasource.UserLocalDataSource
-import com.example.database.entity.UserEntity
 import com.example.net.datasource.GithubRepoDataSource
-import com.example.net.datasource.UserDataSource
+import com.example.net.datasource.UserRemoteDataSource
 import com.example.user.data.GithubRepo
 import com.example.user.data.UserDetails
 import com.example.user.data.toListGithubRepo
 import com.example.user.data.toUserDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.joinAll
@@ -22,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserDetailsViewModel @Inject constructor(
-    private val userRemoteDataSource: UserDataSource,
+    private val userRemoteDataSource: UserRemoteDataSource,
     private val userLocalDataSource: UserLocalDataSource,
     private val githubRepoDataSource: GithubRepoDataSource
 ) : ViewModel() {

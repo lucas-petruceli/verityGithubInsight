@@ -115,7 +115,7 @@ fun MyNavhost(
         composable("details/{userId}/{username}") {
             val userId = it.arguments?.getString("userId")?.toIntOrNull()
             val username = it.arguments?.getString("username")
-            userId?.let {id ->
+            userId?.let { id ->
                 username?.let { name ->
                     UserDetailsScreen(
                         id,
