@@ -1,6 +1,5 @@
 package com.example.home.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,11 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.home.data.User
 import com.example.home.ui.compontents.SearchComponent
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.home.ui.compontents.ShimmerListComponents
 
@@ -50,20 +44,24 @@ import com.example.home.ui.compontents.ShimmerListComponents
 fun HomeScreen(
     navController: NavHostController,
     onTitleChanged: (String) -> Unit,
-    onCanNavigateBackChanged: (Boolean) -> Unit
+    onCanNavigateBackChanged: (Boolean) -> Unit,
+    viewModel: HomeViewModel
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
+    val isLoadData = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        Log.i("Lucasteste", "HomeScreen: LaunchedEffect")
-        onTitleChanged("Users")
+        onTitleChanged("Home")
         onCanNavigateBackChanged(false)
-        viewModel.fetchUsers()
     }
 
-    Log.i("Lucasteste", "HomeScreen: Desenhando")
+    if (!isLoadData.value) {
+        LaunchedEffect(Unit) {
+            viewModel.fetchUsers()
+            isLoadData.value = true
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -77,7 +75,7 @@ fun HomeScreen(
         uiState?.let {
             when (it) {
                 is UiState.Loading -> ShimmerListComponents()
-                is UiState.Error -> ErrorComponent(message =  it.message)
+                is UiState.Error -> ErrorComponent(message = it.message)
                 is UiState.Sucess -> SuccesComponent(
                     users = it.users,
                     searchText = searchQuery.text,

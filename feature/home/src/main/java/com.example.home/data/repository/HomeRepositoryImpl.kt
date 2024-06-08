@@ -23,7 +23,7 @@ class HomeRepositoryImpl @Inject constructor(
             }
 
             val userResponse = userRemoteDataSource.fetchUsers()
-
+            // TODO:  comparar se userlocal tem dados e se o remoto volto dado tb
             if (!userResponse.toEqualLocalDataBase(usersLocal)) {
                 val users = userResponse.toListUser()
                 emit(Result.success(users))
@@ -31,6 +31,7 @@ class HomeRepositoryImpl @Inject constructor(
             }
 
         } catch (e: Exception) {
+            // TODO: comparar se userlocal tem dados, se tive nao emitir o erro
             emit(Result.failure(e))
         }
     }

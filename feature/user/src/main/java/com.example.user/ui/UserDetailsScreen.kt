@@ -19,6 +19,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,12 +42,21 @@ fun UserDetailsScreen(
     val viewModel: UserDetailsViewModel = hiltViewModel()
     val userState by viewModel.user.collectAsState()
     val reposState by viewModel.githubRepo.collectAsState()
+    val isLoadData = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         onTitleChanged("User Details")
         onCanNavigateBackChanged(true)
         viewModel.fetchUserInfos(userId, username)
     }
+
+    if(!isLoadData.value){
+        LaunchedEffect(Unit) {
+            Log.i("Lucasteste", "launch teste lucas")
+            isLoadData.value = true
+        }
+    }
+
 
     Log.i("Lucasteste", "Desenhando UserDetailsScreen - userId ${userId}")
 

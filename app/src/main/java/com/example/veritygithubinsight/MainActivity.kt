@@ -25,11 +25,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.home.ui.HomeScreen
+import com.example.home.ui.HomeViewModel
 import com.example.user.ui.UserDetailsScreen
 import com.example.veritygithubinsight.ui.theme.VerityGitHubInsightTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,10 +48,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             VerityGitHubInsightTheme {
                 val navController = rememberNavController()
-                var topBarTitle by rememberSaveable { mutableStateOf("Users") }
+                var topBarTitle by rememberSaveable { mutableStateOf("Home") }
                 var canNavigateBack by rememberSaveable { mutableStateOf(false) }
-
-                Log.i("Lucasteste", "onCreate: Desenhando MainActivity")
 
                 Scaffold(
                     modifier = Modifier
@@ -100,6 +100,7 @@ fun MyNavhost(
     onTitleChanged: (String) -> Unit,
     onCanNavigateBackChanged: (Boolean) -> Unit
 ) {
+    val viewModel: HomeViewModel = viewModel()
     NavHost(
         modifier = Modifier.padding(innerPadding),
         navController = navController,
@@ -109,7 +110,8 @@ fun MyNavhost(
             HomeScreen(
                 navController,
                 onTitleChanged,
-                onCanNavigateBackChanged
+                onCanNavigateBackChanged,
+                viewModel
             )
         }
         composable("details/{userId}/{username}") {
