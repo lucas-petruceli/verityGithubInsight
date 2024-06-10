@@ -1,6 +1,5 @@
 package com.example.home.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -28,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,8 +34,9 @@ import androidx.compose.ui.unit.sp
 import com.example.home.data.User
 import com.example.home.ui.compontents.SearchComponent
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import com.example.home.ui.compontents.ShimmerListComponents
+import com.example.common.UiState
+import com.example.components.AvatarUserComponent
+import com.example.components.ShimmerListComponents
 
 @Composable
 fun HomeScreen(
@@ -77,7 +75,7 @@ fun HomeScreen(
                 is UiState.Loading -> ShimmerListComponents()
                 is UiState.Error -> ErrorComponent(message = it.message)
                 is UiState.Sucess -> SuccesComponent(
-                    users = it.users,
+                    users = it.data,
                     searchText = searchQuery.text,
                     navController = navController
                 )
@@ -106,7 +104,7 @@ fun SuccesComponent(users: List<User>, searchText: String, navController: NavHos
     ) {
         items(filterUser) { user ->
             ItemCard(user) { item ->
-                navController.navigate("details/${item.id}/${item.name}")
+                navController.navigate("user/${item.name}")
             }
         }
     }
@@ -125,14 +123,7 @@ fun ItemCard(user: User, onClick: (User) -> Unit) {
         Row(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Image(
-                painter = rememberAsyncImagePainter(model = user.avatarUrl),
-                contentDescription = null,
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(90.dp),
-                contentScale = ContentScale.Crop
-            )
+            AvatarUserComponent(imageUrl = user.avatarUrl, width = 100.dp, height = 90.dp)
             Box(modifier = Modifier.fillMaxSize()) {
                 Text(
                     text = user.name,
@@ -143,7 +134,6 @@ fun ItemCard(user: User, onClick: (User) -> Unit) {
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-
         }
     }
 }

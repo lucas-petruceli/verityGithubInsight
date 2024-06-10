@@ -14,15 +14,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.user.R
@@ -34,6 +37,7 @@ fun RepoItemComponent(
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.LightGray),
         modifier = Modifier
             .fillMaxWidth()
             .height(80.dp)
@@ -65,9 +69,10 @@ fun RepoItemComponent(
 
                     Text(
                         text = githubRepo.name,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
                         textAlign = TextAlign.Center,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -91,7 +96,8 @@ fun RepoItemComponent(
 
                     Text(
                         text = githubRepo.stargazersCount.toString(),
-                        fontSize = 14.sp
+                        fontSize = 16.sp,
+                        color = Color.Black
                     )
                 }
 
@@ -109,7 +115,8 @@ fun RepoItemComponent(
 
                     Text(
                         text = githubRepo.forksCount.toString(),
-                        fontSize = 14.sp
+                        fontSize = 16.sp,
+                        color = Color.Black
                     )
                 }
             }

@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.home.ui.HomeScreen
 import com.example.home.ui.HomeViewModel
 import com.example.user.ui.UserDetailsScreen
+import com.example.user.ui.UserViewModel
 import com.example.veritygithubinsight.ui.theme.VerityGitHubInsightTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -92,7 +93,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun MyNavhost(
     innerPadding: PaddingValues,
@@ -100,7 +100,8 @@ fun MyNavhost(
     onTitleChanged: (String) -> Unit,
     onCanNavigateBackChanged: (Boolean) -> Unit
 ) {
-    val viewModel: HomeViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()
+    val userViewModel: UserViewModel = viewModel()
     NavHost(
         modifier = Modifier.padding(innerPadding),
         navController = navController,
@@ -111,23 +112,19 @@ fun MyNavhost(
                 navController,
                 onTitleChanged,
                 onCanNavigateBackChanged,
-                viewModel
+                homeViewModel
             )
         }
-        composable("details/{userId}/{username}") {
-            val userId = it.arguments?.getString("userId")?.toIntOrNull()
+        composable("user/{username}") {
             val username = it.arguments?.getString("username")
-            userId?.let { id ->
-                username?.let { name ->
-                    UserDetailsScreen(
-                        id,
-                        name,
-                        onTitleChanged,
-                        onCanNavigateBackChanged
-                    )
-                }
+            username?.let { name ->
+                UserDetailsScreen(
+                    name,
+                    onTitleChanged,
+                    onCanNavigateBackChanged,
+                    userViewModel
+                )
             }
-
         }
     }
 }

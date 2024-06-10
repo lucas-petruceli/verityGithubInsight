@@ -16,23 +16,25 @@ class HomeRepositoryImpl @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource
 ) : HomeRepository {
     override suspend fun fetchUsers(): Flow<Result<List<User>>> = flow {
-        try {
-            val usersLocal = userLocalDataSource.getAll()
-            usersLocal?.let {
-                emit(Result.success(it.toUsers()))
-            }
+        val usersLocal = userLocalDataSource.getAll()
+        usersLocal?.let {
+            emit(Result.success(it.toUsers()))
+        }
 
+        try {
             val userResponse = userRemoteDataSource.fetchUsers()
-            // TODO:  comparar se userlocal tem dados e se o remoto volto dado tb
             if (!userResponse.toEqualLocalDataBase(usersLocal)) {
                 val users = userResponse.toListUser()
                 emit(Result.success(users))
-                users.forEach { userLocalDataSource.insertUser(it.toUserEntity()) }
+
+                try {
+                    users.forEach { userLocalDataSource.insertUser(it.toUserEntity()) }
+                } catch (_: Exception) { }
             }
 
         } catch (e: Exception) {
-            // TODO: comparar se userlocal tem dados, se tive nao emitir o erro
-            emit(Result.failure(e))
+            if (usersLocal.isNullOrEmpty())
+                emit(Result.failure(e))
         }
     }
 }

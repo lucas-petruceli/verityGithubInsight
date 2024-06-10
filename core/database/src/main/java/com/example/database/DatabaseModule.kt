@@ -1,7 +1,6 @@
 package com.example.database
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import com.example.database.dao.UserDao
 import dagger.Module

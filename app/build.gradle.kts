@@ -54,6 +54,7 @@ android {
 dependencies {
     implementation(project(":core:net"))
     implementation(project(":core:database"))
+    implementation(project(":core:common"))
     implementation(project(":feature:home"))
     implementation(project(":feature:user"))
 
